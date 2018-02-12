@@ -33,7 +33,7 @@ class Tweet {
         let user = dictionary["user"] as! [String: Any]
         self.user = User(dictionary: user)
         
-        profilePic = user["profile_image_url"] as! String
+        profilePic = user["profile_image_url_https"] as! String
         
         let createdAtOriginalString = dictionary["created_at"] as! String
         let formatter = DateFormatter()

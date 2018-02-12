@@ -81,14 +81,15 @@
                                             <subviews>
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="dUC-3h-9q1">
                                                     <rect key="frame" x="8" y="8" width="85" height="85"/>
+                                                    <color key="backgroundColor" red="0.15402532464500168" green="0.15478407008660267" blue="0.15326657920340067" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="85" id="3n8-Bz-w6J"/>
                                                         <constraint firstAttribute="height" constant="85" id="xeS-yu-YX7"/>
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="Username" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Znj-Bh-P89">
-                                                    <rect key="frame" x="101" y="19" width="79" height="20.5"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <rect key="frame" x="101" y="19" width="84" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
@@ -105,7 +106,7 @@
                                                         <constraint firstAttribute="width" constant="30" id="10p-Yd-vZ8"/>
                                                         <constraint firstAttribute="height" constant="30" id="qar-YT-yTI"/>
                                                     </constraints>
-                                                    <state key="normal" image="favor-icon"/>
+                                                    <state key="normal" backgroundImage="favor-icon"/>
                                                     <connections>
                                                         <action selector="favoriteTweet:" destination="U1g-kw-izy" eventType="touchUpInside" id="yZf-22-UBp"/>
                                                     </connections>
@@ -117,19 +118,19 @@
                                                         <constraint firstAttribute="width" constant="30" id="195-Xw-gXO"/>
                                                         <constraint firstAttribute="height" constant="30" id="5PK-Li-dJp"/>
                                                     </constraints>
-                                                    <state key="normal" image="retweet-icon"/>
+                                                    <state key="normal" backgroundImage="retweet-icon"/>
                                                     <connections>
                                                         <action selector="retweetTweet:" destination="U1g-kw-izy" eventType="touchUpInside" id="vzm-Pg-A0E"/>
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Handle" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="s2f-7J-SDB">
-                                                    <rect key="frame" x="188" y="18" width="55" height="21"/>
+                                                    <rect key="frame" x="193" y="18" width="55" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.52629128886010368" green="0.52484055738495106" blue="0.51787572818943606" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="751" text="TIME" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qfu-wl-hxg">
-                                                    <rect key="frame" x="251" y="18" width="39" height="21"/>
+                                                    <rect key="frame" x="256" y="18" width="39" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.52536118030548096" green="0.52563494443893433" blue="0.51764196157455444" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                                     <nil key="highlightedColor"/>

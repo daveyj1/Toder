@@ -31,7 +31,8 @@ class TweetCell: UITableViewCell {
             favoriteCount.text = "\(String(describing: tweet.favoriteCount!))"
             
             profilePicImage.af_setImage(withURL: URL(string: tweet.profilePic)!)
-            print(tweet.profilePic)
+            profilePicImage.layer.masksToBounds = true
+            profilePicImage.layer.cornerRadius = 10
             
             if tweet.retweeted == true {
                 retweetButton.setImage(#imageLiteral(resourceName: "retweet-icon-green"), for: .normal)

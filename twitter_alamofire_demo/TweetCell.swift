@@ -49,58 +49,75 @@ class TweetCell: UITableViewCell {
     }
     
     @IBAction func retweetTweet(_ sender: Any) {
-        if tweet.retweeted == true {
-            APIManager.shared.unretweet(tweet, completion: { (tweet, error) in
-                if let error = error {
-                    print(error.localizedDescription)
-                    print("Tweet could not be unretweeted")
+        if tweet.retweeted {
+            APIManager.shared.unretweet(tweet) { (tweet: Tweet?, error: Error?) in
+                if let  error = error {
+                    self.retweetButton.isUserInteractionEnabled = true
+                    print("Error unretweeting tweet: \(error.localizedDescription)")
+                    print("Printed here")
+                } else if let tweet = tweet {
+                    self.retweetButton.isUserInteractionEnabled = true
+                    print("Successfully unretweeted the following Tweet: \n\(tweet.text)")
                     self.retweetButton.setImage(#imageLiteral(resourceName: "retweet-icon"), for: .normal)
-                } else {
-                    
                 }
-            })
-            retweetButton.setImage(#imageLiteral(resourceName: "retweet-icon"), for: .normal)
+            }
         } else {
-            APIManager.shared.retweet(tweet, completion: { (tweet, error) in
-                if let error = error {
-                    print(error.localizedDescription)
-                    print("Tweet could not be retweeted")
-                } else {
-                    print("Tweet retweeted")
+            APIManager.shared.retweet(tweet) { (tweet: Tweet?, error: Error?) in
+                if let  error = error {
+                    self.retweetButton.isUserInteractionEnabled = true
+                    print("Error retweeting tweet: \(error.localizedDescription)")
+                    print("Printed here")
+                } else if let tweet = tweet {
+                    self.retweetButton.isUserInteractionEnabled = true
+                    print("Successfully retweeted the following Tweet: \n\(tweet.text)")
+                    self.retweetButton.setImage(#imageLiteral(resourceName: "retweet-icon-green"), for: .normal)
                 }
-            })
-            retweetButton.setImage(#imageLiteral(resourceName: "retweet-icon-green"), for: .normal)
+            }
         }
     }
     
     @IBAction func favoriteTweet(_ sender: Any) {
         self.likeButton.isUserInteractionEnabled = false
-        if tweet.favorited == true {
-            APIManager.shared.unfavorite(tweet, completion: { (tweet, error) in
-                if let error = error {
-                    self.likeButton.isUserInteractionEnabled = true
-                    print(error.localizedDescription)
-                    print("Tweet could not be favorited")
-                } else {
-                    self.likeButton.isUserInteractionEnabled = true
-                    self.tweet = tweet
-                    print("Tweet favorited")
+        if let favorited = tweet.favorited {
+            if favorited {
+                APIManager.shared.unfavorite(tweet) { (tweet: Tweet?, error: Error?) in
+                    if let  error = error {
+                        self.likeButton.isUserInteractionEnabled = true
+                        print("Error unfavoriting tweet: \(error.localizedDescription)")
+                        print("Printed here")
+                    } else if let tweet = tweet {
+                        self.likeButton.isUserInteractionEnabled = true
+                        print("Successfully unfavorited the following Tweet: \n\(tweet.text)")
+                        self.tweet = tweet
+                        self.likeButton.setImage(#imageLiteral(resourceName: "favor-icon"), for: .normal)
+                    }
                 }
-            })
-            likeButton.setImage(#imageLiteral(resourceName: "favor-icon"), for: .normal)
+            } else {
+                APIManager.shared.favorite(tweet) { (tweet: Tweet?, error: Error?) in
+                    if let  error = error {
+                        self.likeButton.isUserInteractionEnabled = true
+                        print("Error favoriting tweet: \(error.localizedDescription)")
+                        print("Printed here though!")
+                    } else if let tweet = tweet {
+                        self.likeButton.isUserInteractionEnabled = true
+                        print("Successfully favorited the following Tweet: \n\(tweet.text)")
+                        self.tweet = tweet
+                        self.likeButton.setImage(#imageLiteral(resourceName: "favor-icon-red"), for: .normal)
+                    }
+                }
+            }
         } else {
-            APIManager.shared.favorite(tweet, completion: { (tweet, error) in
-                if let error = error {
+            APIManager.shared.favorite(tweet) { (tweet: Tweet?, error: Error?) in
+                if let  error = error {
                     self.likeButton.isUserInteractionEnabled = true
-                    print(error.localizedDescription)
-                    print("Tweet could not be favorited")
-                } else {
+                    print("Error favoriting tweet: \(error.localizedDescription)")
+                } else if let tweet = tweet {
                     self.likeButton.isUserInteractionEnabled = true
+                    print("Successfully favorited the following Tweet: \n\(tweet.text)")
                     self.tweet = tweet
-                    print("Tweet favorited")
+                    self.likeButton.setImage(#imageLiteral(resourceName: "favor-icon-red"), for: .normal)
                 }
-            })
-            likeButton.setImage(#imageLiteral(resourceName: "favor-icon-red"), for: .normal)
+            }
         }
     }
     

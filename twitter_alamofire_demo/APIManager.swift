@@ -121,6 +121,7 @@ class APIManager: SessionManager {
     func favorite(_ tweet: Tweet, completion: @escaping (Tweet?, Error?) -> ()) {
         let urlString = URL(string: "https://api.twitter.com/1.1/favorites/create.json")
         let parameters = ["id": tweet.id]
+        print(parameters)
         request(urlString!, method: .post, parameters: parameters, encoding: URLEncoding.queryString).validate().responseJSON { (response) in
             if response.result.isSuccess,
                 let tweetDictionary = response.result.value as? [String: Any] {

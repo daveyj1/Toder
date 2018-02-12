@@ -80,7 +80,7 @@ class TweetCell: UITableViewCell {
         self.likeButton.isUserInteractionEnabled = false
         if let favorited = tweet.favorited {
             if favorited {
-                APIManager.shared.unfavorite(tweet) { (tweet: Tweet?, error: Error?) in
+                APIManager.shared.unfavorite(tweet, completion: { (tweet, error) in
                     if let  error = error {
                         self.likeButton.isUserInteractionEnabled = true
                         print("Error unfavoriting tweet: \(error.localizedDescription)")
@@ -91,9 +91,9 @@ class TweetCell: UITableViewCell {
                         self.tweet = tweet
                         self.likeButton.setImage(#imageLiteral(resourceName: "favor-icon"), for: .normal)
                     }
-                }
+                })
             } else {
-                APIManager.shared.favorite(tweet) { (tweet: Tweet?, error: Error?) in
+                APIManager.shared.favorite(tweet, completion: { (tweet, error) in
                     if let  error = error {
                         self.likeButton.isUserInteractionEnabled = true
                         print("Error favoriting tweet: \(error.localizedDescription)")
@@ -104,7 +104,7 @@ class TweetCell: UITableViewCell {
                         self.tweet = tweet
                         self.likeButton.setImage(#imageLiteral(resourceName: "favor-icon-red"), for: .normal)
                     }
-                }
+                })
             }
         } else {
             APIManager.shared.favorite(tweet) { (tweet: Tweet?, error: Error?) in

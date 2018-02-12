@@ -29,14 +29,11 @@ class Tweet {
         favorited = dictionary["favorited"] as? Bool
         retweetCount = dictionary["retweet_count"] as! Int
         retweeted = dictionary["retweeted"] as! Bool
-        profilePic = "hello"
-        
-        if let profPic = dictionary["profile_image_url"] as? String {
-            profilePic = profPic
-        }
         
         let user = dictionary["user"] as! [String: Any]
         self.user = User(dictionary: user)
+        
+        profilePic = user["profile_image_url"] as! String
         
         let createdAtOriginalString = dictionary["created_at"] as! String
         let formatter = DateFormatter()

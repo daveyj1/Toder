@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import Alamofire
+import AlamofireImage
 
 class TweetCell: UITableViewCell {
     
@@ -16,14 +16,25 @@ class TweetCell: UITableViewCell {
     @IBOutlet weak var usernameLabel: UILabel!
     @IBOutlet weak var retweetButton: UIButton!
     @IBOutlet weak var likeButton: UIButton!
+    @IBOutlet weak var handleLabel: UILabel!
+    @IBOutlet weak var timeStampLabel: UILabel!
+    @IBOutlet weak var retweetCount: UILabel!
+    @IBOutlet weak var favoriteCount: UILabel!
     
     var tweet: Tweet! {
         didSet {
             tweetTextLabel.text = tweet.text
             usernameLabel.text = tweet.user.name
+            handleLabel.text = "@\(tweet.user.handle)"
+            timeStampLabel.text = tweet.createdAtString
+            retweetCount.text = "\(String(tweet.retweetCount))"
+            favoriteCount.text = "\(String(describing: tweet.favoriteCount!))"
+            
+            profilePicImage.af_setImage(withURL: URL(string: tweet.profilePic)!)
+            print(tweet.profilePic)
             
             if tweet.retweeted == true {
-                retweetButton.setImage(UIImage(named: ""), for: .normal)
+                retweetButton.setImage(#imageLiteral(resourceName: "retweet-icon-green"), for: .normal)
             } else {
                 retweetButton.setImage(#imageLiteral(resourceName: "retweet-icon"), for: .normal)
             }
@@ -37,14 +48,64 @@ class TweetCell: UITableViewCell {
     }
     
     @IBAction func retweetTweet(_ sender: Any) {
+        if tweet.retweeted == true {
+            APIManager.shared.unretweet(tweet, completion: { (tweet, error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                    print("Tweet could not be unretweeted")
+                    self.retweetButton.setImage(#imageLiteral(resourceName: "retweet-icon"), for: .normal)
+                } else {
+                    
+                }
+            })
+            retweetButton.setImage(#imageLiteral(resourceName: "retweet-icon"), for: .normal)
+        } else {
+            APIManager.shared.retweet(tweet, completion: { (tweet, error) in
+                if let error = error {
+                    print(error.localizedDescription)
+                    print("Tweet could not be retweeted")
+                } else {
+                    print("Tweet retweeted")
+                }
+            })
+            retweetButton.setImage(#imageLiteral(resourceName: "retweet-icon-green"), for: .normal)
+        }
     }
     
     @IBAction func favoriteTweet(_ sender: Any) {
+        self.likeButton.isUserInteractionEnabled = false
+        if tweet.favorited == true {
+            APIManager.shared.unfavorite(tweet, completion: { (tweet, error) in
+                if let error = error {
+                    self.likeButton.isUserInteractionEnabled = true
+                    print(error.localizedDescription)
+                    print("Tweet could not be favorited")
+                } else {
+                    self.likeButton.isUserInteractionEnabled = true
+                    self.tweet = tweet
+                    print("Tweet favorited")
+                }
+            })
+            likeButton.setImage(#imageLiteral(resourceName: "favor-icon"), for: .normal)
+        } else {
+            APIManager.shared.favorite(tweet, completion: { (tweet, error) in
+                if let error = error {
+                    self.likeButton.isUserInteractionEnabled = true
+                    print(error.localizedDescription)
+                    print("Tweet could not be favorited")
+                } else {
+                    self.likeButton.isUserInteractionEnabled = true
+                    self.tweet = tweet
+                    print("Tweet favorited")
+                }
+            })
+            likeButton.setImage(#imageLiteral(resourceName: "favor-icon-red"), for: .normal)
+        }
     }
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        profilePicImage.layer.cornerRadius = 40
+        //profilePicImage.layer.cornerRadius = 40
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {

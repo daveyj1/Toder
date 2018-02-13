@@ -50,7 +50,7 @@ class TweetCell: UITableViewCell {
     
     @IBAction func retweetTweet(_ sender: Any) {
         if tweet.retweeted {
-            APIManager.shared.unretweet(tweet) { (tweet: Tweet?, error: Error?) in
+            APIManager.shared.unRetweet(tweet) { (tweet: Tweet?, error: Error?) in
                 if let  error = error {
                     self.retweetButton.isUserInteractionEnabled = true
                     print("Error unretweeting tweet: \(error.localizedDescription)")
@@ -58,6 +58,10 @@ class TweetCell: UITableViewCell {
                 } else if let tweet = tweet {
                     self.retweetButton.isUserInteractionEnabled = true
                     print("Successfully unretweeted the following Tweet: \n\(tweet.text)")
+                    
+                    tweet.retweeted = false
+                    let count = tweet.retweetCount
+                    tweet.retweetCount = count - 1
                     self.retweetButton.setImage(#imageLiteral(resourceName: "retweet-icon"), for: .normal)
                 }
             }
@@ -65,11 +69,15 @@ class TweetCell: UITableViewCell {
             APIManager.shared.retweet(tweet) { (tweet: Tweet?, error: Error?) in
                 if let  error = error {
                     self.retweetButton.isUserInteractionEnabled = true
-                    print("Error retweeting tweet: \(error.localizedDescription)")
+                    print("Error retweeting tweet: \(error)")
                     print("Printed here")
                 } else if let tweet = tweet {
                     self.retweetButton.isUserInteractionEnabled = true
                     print("Successfully retweeted the following Tweet: \n\(tweet.text)")
+                    
+                    tweet.retweeted = true
+                    let count = tweet.retweetCount
+                    tweet.retweetCount = count + 1
                     self.retweetButton.setImage(#imageLiteral(resourceName: "retweet-icon-green"), for: .normal)
                 }
             }
@@ -89,11 +97,15 @@ class TweetCell: UITableViewCell {
                         self.likeButton.isUserInteractionEnabled = true
                         print("Successfully unfavorited the following Tweet: \n\(tweet.text)")
                         self.tweet = tweet
+                        
+                        tweet.favorited = false
+                        let count = tweet.favoriteCount
+                        tweet.favoriteCount = count! - 1
                         self.likeButton.setImage(#imageLiteral(resourceName: "favor-icon"), for: .normal)
                     }
                 })
             } else {
-                APIManager.shared.favorite(tweet, completion: { (tweet, error) in
+                APIManager.shared.favoriteATweet(tweet, completion: { (tweet, error) in
                     if let  error = error {
                         self.likeButton.isUserInteractionEnabled = true
                         print("Error favoriting tweet: \(error.localizedDescription)")
@@ -102,12 +114,16 @@ class TweetCell: UITableViewCell {
                         self.likeButton.isUserInteractionEnabled = true
                         print("Successfully favorited the following Tweet: \n\(tweet.text)")
                         self.tweet = tweet
+                        
+                        tweet.favorited = true
+                        let count = tweet.favoriteCount
+                        tweet.favoriteCount = count! + 1
                         self.likeButton.setImage(#imageLiteral(resourceName: "favor-icon-red"), for: .normal)
                     }
                 })
             }
         } else {
-            APIManager.shared.favorite(tweet) { (tweet: Tweet?, error: Error?) in
+            APIManager.shared.favoriteATweet(tweet) { (tweet: Tweet?, error: Error?) in
                 if let  error = error {
                     self.likeButton.isUserInteractionEnabled = true
                     print("Error favoriting tweet: \(error.localizedDescription)")
@@ -115,6 +131,10 @@ class TweetCell: UITableViewCell {
                     self.likeButton.isUserInteractionEnabled = true
                     print("Successfully favorited the following Tweet: \n\(tweet.text)")
                     self.tweet = tweet
+                    
+                    tweet.favorited = true
+                    let count = tweet.favoriteCount
+                    tweet.favoriteCount = count! + 1
                     self.likeButton.setImage(#imageLiteral(resourceName: "favor-icon-red"), for: .normal)
                 }
             }

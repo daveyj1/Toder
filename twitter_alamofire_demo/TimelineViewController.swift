@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import AlamofireImage
 
-class TimelineViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class TimelineViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, ComposeTweetControllerDelegate {
     
     var tweets: [Tweet] = []
     
@@ -37,6 +38,20 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
                 print("Error getting home timeline: " + error.localizedDescription)
             }
         }
+        
+        print("CURRENT USER \((User.current?.handle)!)")
+    }
+    
+    @IBAction func profileButton(_ sender: Any) {
+        let dest = ProfileViewController(nibName: "ProfileViewController", bundle: nil)
+        performSegue(withIdentifier: "profileSegue", sender: nil)
+    }
+    
+    @IBAction func composeTweet(_ sender: Any) {
+        print("Please")
+        let dest = ComposeTweetViewController(nibName: "ComposeTweetViewController", bundle: nil)
+        dest.delegate = self
+        self.performSegue(withIdentifier: "composeSegue", sender: nil)
     }
     
     @objc func didPullToRefresh(_ refreshControl: UIRefreshControl) {
@@ -78,15 +93,28 @@ class TimelineViewController: UIViewController, UITableViewDelegate, UITableView
         APIManager.shared.logout()
     }
     
+    func did(post: Tweet) {
+        APIManager.shared.getHomeTimeLine { (tweets, error) in
+            if let tweets = tweets {
+                self.tweets = tweets
+                self.tableView.reloadData()
+            } else if let error = error {
+                print("Error getting home timeline: " + error.localizedDescription)
+            }
+        }
+    }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        print("In prepare")
+        if segue.identifier == "detailSegue" {
+            let cell = sender as! UITableViewCell
+            if let indexPath = tableView.indexPath(for: cell) {
+                let tweet = tweets[indexPath.row]
+                let user = tweet.user
+                let dest = segue.destination as! DetailViewController
+                dest.tweet = tweet
+                dest.user = user
+            }
+        }
+    }
 }

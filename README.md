@@ -68,7 +68,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 
-# Project 6 - *Name of App Here*
+# Project 6 - Toder
 
 Time spent: 6 hours spent in total
 
